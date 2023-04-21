@@ -1,7 +1,7 @@
 <template>
   <div class="popup-view">
     {{ aaa }}
-    <button @click="aaa = '23123123'">31231</button>
+    <button @click="aaa = '23123123'">3213</button>
   </div>
 </template>
 

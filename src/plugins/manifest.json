@@ -8,7 +8,7 @@
     "default_icon": "assets/logo.svg"
   },
   "host_permissions": [
-    "https://*.*"
+    "*://*.aliyun.com/"
   ],
   "permissions": [
     "cookies"

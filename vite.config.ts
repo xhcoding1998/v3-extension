@@ -36,10 +36,7 @@ export default defineConfig({
       },
       output: {
         dir: 'dist',
-        entryFileNames: '[name].js',
-        globals: {
-          chrome: 'chrome'
-        }
+        entryFileNames: '[name].js'
       },
     }
   },
