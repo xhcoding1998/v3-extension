@@ -10,6 +10,9 @@
   "host_permissions": [
     "*://*.aliyun.com/"
   ],
+  "background": {
+    "persistent": true
+  },
   "permissions": [
     "cookies"
   ]

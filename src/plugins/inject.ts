@@ -5,11 +5,14 @@ import { useConfigStore } from "@/stores/counter";
   // 获取配置文件
   const { config, changeCookies } = useConfigStore()
 
-  type key = keyof (typeof config.cookies)
+  type keyType = keyof (typeof config.cookies)
+  type keyed = {
+    [key in keyType]?: string | number
+  }
   // 覆盖默认值
-  const cookieObj = {}
+  const cookieObj: keyed = {}
   cookies.forEach(item => {
-    const name: key = item.name as key
+    const name = item.name as keyType
     if (config.cookies.hasOwnProperty(name)) {
       cookieObj[name] = item.value
     }
