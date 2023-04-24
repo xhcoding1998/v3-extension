@@ -16,7 +16,8 @@
     </div>
     <div class="handle-btn">
       <button @click="getPipeList">获取流水线列表</button>
-      <button @click="runPipeList">运行流水线</button>
+      <button @click="runPipeList('dev')">运行测试流水线</button>
+      <button @click="runPipeList('pro')">运行生产流水线</button>
     </div>
     <div class="pipeline-list">
       <label
@@ -72,8 +73,9 @@
   })
 
   //  运行流水线
-  const runPipeList = async ()=> {
+  const runPipeList = async (env: 'dev' | 'pro')=> {
     const data = {
+      env,
       list: list.value.filter(item => item.checked)
     }
 

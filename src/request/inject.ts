@@ -12,12 +12,14 @@ export default {
       if (_config.method === 'get') {
         _config.params = {
           ..._config.params,
-          cookie: merge2Str(config.cookies)
+          cookie: merge2Str(config.cookies),
+          'x-xsrf-token': config.cookies['XSRF-TOKEN']
         }
       }else {
         _config.data = {
           ..._config.data,
-          cookie: merge2Str(config.cookies)
+          cookie: merge2Str(config.cookies),
+          'x-xsrf-token': config.cookies['XSRF-TOKEN']
         }
       }
 
