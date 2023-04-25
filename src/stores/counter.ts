@@ -56,9 +56,8 @@ export const useConfigStore = defineStore('config', () => {
     }
   })
 
-  const changeCookies = (cookies) => {
+  const changeCookies = (cookies: any) => {
     config.cookies = reactive(cookies)
-    console.log(config.cookies);
   }
 
   return { config, changeCookies }
