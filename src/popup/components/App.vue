@@ -1,13 +1,21 @@
 <template>
   <div class="popup-view">
-    <h3>FMP流水线插件</h3>
-
     <div class="sticky-box">
+      <h3>流水线信息</h3>
+      <div class="form">
+        <p class="form-item">
+           运行最新提交的分支（不勾选采取默认项）：<input type="checkbox" v-model="form.runLastedBranch">
+        </p>
+        <p class="form-item">
+          流水线：<input class="search-input" type="text" v-model="form.keywords" placeholder="请输入要查询的流水线">
+        </p>
+      </div>
       <div class="handle-btn">
         <button @click="getPipeList">获取流水线列表</button>
         <button @click="runPipeList('dev')">运行测试流水线</button>
         <button @click="runPipeList('pro')">运行生产流水线</button>
       </div>
+      <h3>搜索框：</h3>
       <div class="search-box">
         <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
         <div v-if="searchList.length" class="search-list pipeline-list">
@@ -38,7 +46,7 @@
 
 <script setup lang="ts">
   import { getPipelines, runPipelines } from "@/api/pipelines";
-  import { ref, watch } from "vue";
+  import {reactive, ref, watch} from "vue";
   import type { Ref } from "vue"
 
   interface ItemType {
@@ -48,10 +56,16 @@
     name: string,
   }
 
+  // 表单信息
+  let form = reactive({
+    runLastedBranch: false,
+    keywords: ''
+  })
+
   //  获取流水线列表
   let list: Ref<ItemType[]> = ref([])
   const getPipeList = async () => {
-    const res: any = await getPipelines()
+    const res: any = await getPipelines(form)
     list.value = res.list.map((item: ItemType): ItemType => {
       return { ...item, checked: false }
     })
@@ -79,11 +93,13 @@
   const runPipeList = async (env: 'dev' | 'pro')=> {
     const data = {
       env,
+      ...form,
       list: list.value.filter(item => item.checked)
     }
+    pipelineValue.value = ''
+    list.value.forEach(item=> item.checked = false)
 
     const res = await runPipelines(data)
-    console.log(res);
   }
 
 </script>
@@ -91,23 +107,26 @@
 <style scoped>
   .popup-view {
     width: 500px;
-    height: 300px;
+    height: 600px;
     overflow: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
   h3 {
-    margin: 10px 0 0 0;
+    padding: 10px 0;
   }
   .search-box {
-    padding: 10px 0;
     box-sizing: border-box;
     display: flex;
+    position: relative;
+    margin-bottom: 10px;
   }
-  .search-box .search-input {
+  .search-input {
     width: 100%;
     height: 30px;
     display: block;
-    padding: 0 10px;
     box-sizing: border-box;
+    padding: 0 10px;
   }
   .search-box .search-list {
     width: 100%;
@@ -117,9 +136,10 @@
     top: 40px;
     left: 0;
     box-sizing: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     overflow: auto;
+    padding: 0 10px;
+    box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
   .pipeline-list {
@@ -149,6 +169,18 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-top: 10px;
+    padding: 10px 0;
+  }
+  .form {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+  }
+  .form-item {
+    display: flex;
+    align-items: center;
+  }
+  .form-item .search-input {
+    flex: 1;
   }
 </style>
