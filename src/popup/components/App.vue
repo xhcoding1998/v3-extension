@@ -56,14 +56,24 @@
     name: string,
   }
 
+  interface FormType {
+    runLastedBranch: boolean,
+    keywords: string
+  }
+
+  interface RunType extends FormType {
+    env: string,
+    list: ItemType[]
+  }
+
   // 表单信息
-  let form = reactive({
+  let form = reactive<FormType>({
     runLastedBranch: false,
     keywords: ''
   })
 
   //  获取流水线列表
-  let list: Ref<ItemType[]> = ref([])
+  let list = ref<ItemType[]>([])
   const getPipeList = async () => {
     const res: any = await getPipelines(form)
     list.value = res.list.map((item: ItemType): ItemType => {
@@ -72,14 +82,14 @@
   }
 
   // 获取checkbox元素
-  let checkboxDoms: Ref<Element[]> = ref([])
+  let checkboxDoms = ref<Element[]>([])
   const handleRef = (el: Element, item: ItemType) => {
     checkboxDoms.value.push(el)
   }
 
   //  监听搜索值
-  let pipelineValue: Ref<string> = ref('')
-  let searchList: Ref<ItemType[]> = ref([])
+  let pipelineValue = ref<string>('')
+  let searchList = ref<ItemType[]>([])
   watch(pipelineValue, (value, oldValue, onCleanup) => {
     if (!value.trim()) {
       return searchList.value = []
@@ -91,10 +101,10 @@
 
   //  运行流水线
   const runPipeList = async (env: 'dev' | 'pro')=> {
-    const data = {
+    const data: RunType = {
       env,
+      list: list.value.filter(item => item.checked),
       ...form,
-      list: list.value.filter(item => item.checked)
     }
     pipelineValue.value = ''
     list.value.forEach(item=> item.checked = false)
