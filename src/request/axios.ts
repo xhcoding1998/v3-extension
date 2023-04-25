@@ -1,6 +1,5 @@
 import axios from 'axios'
 import type { AxiosInstance } from "axios";
-import { merge2Str } from "@/utils";
 
 axios.defaults.withCredentials = true
 axios.defaults.headers.post['Content-Type'] = 'application/json'

@@ -1,4 +1,4 @@
-import { useConfigStore } from "@/stores/counter";
+import { useConfigStore } from "@/stores/config";
 
 (async () => {
   const cookies = await chrome.cookies.getAll({ domain: '.aliyun.com' })

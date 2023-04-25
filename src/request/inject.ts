@@ -1,8 +1,8 @@
 import request from "@/request/axios";
-import { useConfigStore } from "@/stores/counter";
+import { useConfigStore } from "@/stores/config";
 import { merge2Str } from "@/utils";
 
-import type {AxiosResponse, InternalAxiosRequestConfig} from 'axios';
+import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 
 export default {
   install() {
