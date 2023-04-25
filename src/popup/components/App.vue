@@ -1,23 +1,26 @@
 <template>
   <div class="popup-view">
     <h3>FMP流水线插件</h3>
-    <div class="search-box">
-      <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
-      <div v-if="searchList.length" class="search-list pipeline-list">
-        <label
-          class="pipeline-item"
-          v-for="(item, idx) in searchList" :key="idx"
-          :for="item.pipelineId"
-        >
-          <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
-          <span class="pipeline-name">{{ item.name }}</span>
-        </label>
+
+    <div class="sticky-box">
+      <div class="handle-btn">
+        <button @click="getPipeList">获取流水线列表</button>
+        <button @click="runPipeList('dev')">运行测试流水线</button>
+        <button @click="runPipeList('pro')">运行生产流水线</button>
       </div>
-    </div>
-    <div class="handle-btn">
-      <button @click="getPipeList">获取流水线列表</button>
-      <button @click="runPipeList('dev')">运行测试流水线</button>
-      <button @click="runPipeList('pro')">运行生产流水线</button>
+      <div class="search-box">
+        <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
+        <div v-if="searchList.length" class="search-list pipeline-list">
+          <label
+            class="pipeline-item"
+            v-for="(item, idx) in searchList" :key="idx"
+            :for="item.pipelineId"
+          >
+            <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
+            <span class="pipeline-name">{{ item.name }}</span>
+          </label>
+        </div>
+      </div>
     </div>
     <div class="pipeline-list">
       <label
@@ -98,10 +101,6 @@
     padding: 10px 0;
     box-sizing: border-box;
     display: flex;
-    position: sticky;
-    background: #FFFFFF;
-    top: 0;
-    left: 0;
   }
   .search-box .search-input {
     width: 100%;
@@ -140,10 +139,16 @@
     margin-left: 20px;
   }
 
+  .sticky-box {
+    position: sticky;
+    background: #FFFFFF;
+    top: 0;
+    left: 0;
+  }
   .handle-btn {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-bottom: 10px;
+    margin-top: 10px;
   }
 </style>
