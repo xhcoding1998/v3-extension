@@ -1,0 +1,1 @@
+import{u as i}from"./assets/config-f7419acd.js";(async()=>{const n=await chrome.cookies.getAll({domain:".aliyun.com"}),{config:a,changeCookies:s}=i(),o={};n.forEach(c=>{const e=c.name;a.cookies.hasOwnProperty(e)&&(o[e]=c.value)}),s(o)})();

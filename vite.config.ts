@@ -18,8 +18,8 @@ export default defineConfig({
           dest : ''
         },
         {
-          src : 'src/assets' ,
-          dest : ''
+          src : 'src/assets/logo.png' ,
+          dest : 'assets/'
         },
       ]
     } )
@@ -30,9 +30,11 @@ export default defineConfig({
       include: 'src/**'
     },
     rollupOptions: {
+      treeshake: false,
       input: {
         'main': 'index.html',
         'inject': 'src/plugins/inject.ts',
+        // 'background': 'src/plugins/background.ts',
       },
       output: {
         dir: 'dist',
