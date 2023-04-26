@@ -68,7 +68,7 @@
 
   // 表单信息
   let form = reactive<FormType>({
-    runLastedBranch: true,
+    runLastedBranch: false,
     keywords: ''
   })
 
