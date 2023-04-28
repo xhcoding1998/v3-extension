@@ -7,20 +7,20 @@ import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 export default {
   install() {
     const { config } = useConfigStore()
-
+    const methodMixin = {
+      get: 'params',
+      post:  'data'
+    }
     request.interceptors.request.use(function (_config: InternalAxiosRequestConfig) {
+      const data = {
+        ..._config.params,
+        cookie: merge2Str(config.cookies),
+        'x-xsrf-token': config.cookies['XSRF-TOKEN']
+      }
       if (_config.method === 'get') {
-        _config.params = {
-          ..._config.params,
-          cookie: merge2Str(config.cookies),
-          'x-xsrf-token': config.cookies['XSRF-TOKEN']
-        }
+        _config.params = data
       }else {
-        _config.data = {
-          ..._config.data,
-          cookie: merge2Str(config.cookies),
-          'x-xsrf-token': config.cookies['XSRF-TOKEN']
-        }
+        _config.data = data
       }
 
       // 在发送请求之前做些什么
