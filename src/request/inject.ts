@@ -7,7 +7,7 @@ import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 export default {
   install() {
     const { config } = useConfigStore()
-    request.interceptors.request.use(function (_config: InternalAxiosRequestConfig) {
+    request.interceptors.request.use((_config: InternalAxiosRequestConfig) => {
       const data = {
         ..._config.params,
         cookie: merge2Str(config.cookies),
