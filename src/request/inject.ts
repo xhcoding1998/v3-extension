@@ -7,10 +7,6 @@ import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 export default {
   install() {
     const { config } = useConfigStore()
-    const methodMixin = {
-      get: 'params',
-      post:  'data'
-    }
     request.interceptors.request.use(function (_config: InternalAxiosRequestConfig) {
       const data = {
         ..._config.params,
