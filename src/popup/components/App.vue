@@ -3,9 +3,9 @@
     <div class="sticky-box">
       <h3>流水线信息</h3>
       <div class="form">
-        <p class="form-item">
+        <!-- <p class="form-item">
            运行最新提交的分支（不勾选采取默认项）：<input type="checkbox" v-model="form.runLastedBranch">
-        </p>
+        </p> -->
         <p class="form-item">
           流水线：<input class="search-input" type="text" v-model="form.keywords" placeholder="请输入要查询的流水线">
         </p>
@@ -108,6 +108,8 @@
     }
     pipelineValue.value = ''
     list.value.forEach(item=> item.checked = false)
+
+    console.log(data);
 
     const res = await runPipelines(data)
   }

@@ -10,6 +10,7 @@ export default {
     request.interceptors.request.use((_config: InternalAxiosRequestConfig) => {
       const data = {
         ..._config.params,
+        ..._config.data,
         cookie: merge2Str(config.cookies),
         'x-xsrf-token': config.cookies['XSRF-TOKEN']
       }

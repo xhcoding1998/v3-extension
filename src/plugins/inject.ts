@@ -14,8 +14,10 @@ import { useConfigStore } from "@/stores/config";
   cookies.forEach(item => {
     const name = item.name as keyType
     if (config.cookies.hasOwnProperty(name)) {
+      if (name === 'XSRF-TOKEN' && item.domain !== 'flow.aliyun.com') return
       cookieObj[name] = item.value
     }
   })
+  console.log(cookies);
   changeCookies(cookieObj)
 })()
