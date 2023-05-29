@@ -12,7 +12,10 @@ export default {
         ..._config.params,
         ..._config.data,
         cookie: merge2Str(config.cookies),
-        'x-xsrf-token': config.cookies['XSRF-TOKEN']
+        'x-xsrf-token': config.cookies['XSRF-TOKEN'],
+        devRobotWebHook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=0b838ef3-e015-4f65-bd18-6c524f7418dc',
+        proRobotWebHook: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=0b838ef3-e015-4f65-bd18-6c524f7418dc',
+        sendProStatus: false
       }
       if (_config.method === 'get') {
         _config.params = data
