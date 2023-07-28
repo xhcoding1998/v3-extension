@@ -1,49 +1,3 @@
-<template>
-  <div class="popup-view">
-    <div class="sticky-box">
-      <h3>流水线信息</h3>
-      <div class="form">
-        <!-- <p class="form-item">
-           运行最新提交的分支（不勾选采取默认项）：<input type="checkbox" v-model="form.runLastedBranch">
-        </p> -->
-        <p class="form-item">
-          流水线：<input class="search-input" type="text" v-model="form.keywords" placeholder="请输入要查询的流水线">
-        </p>
-      </div>
-      <div class="handle-btn">
-        <button @click="getPipeList">获取流水线列表</button>
-        <button @click="runPipeList('dev')">运行测试流水线</button>
-        <button @click="runPipeList('pro')">运行生产流水线</button>
-      </div>
-      <h3>搜索框：</h3>
-      <div class="search-box">
-        <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
-        <div v-if="searchList.length" class="search-list pipeline-list">
-          <label
-            class="pipeline-item"
-            v-for="(item, idx) in searchList" :key="idx"
-            :for="item.pipelineId"
-          >
-            <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
-            <span class="pipeline-name">{{ item.name }}</span>
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="pipeline-list">
-      <label
-        class="pipeline-item"
-        v-for="(item, idx) in list" :key="idx"
-        :for="item.pipelineId"
-        :ref="el => handleRef(el, item)"
-      >
-        <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
-        <span class="pipeline-name">{{ item.name }}</span>
-      </label>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
   import { getPipelines, runPipelines } from "@/api/pipelines";
   import {reactive, ref, watch} from "vue";
@@ -90,6 +44,7 @@
   //  监听搜索值
   let pipelineValue = ref<string>('')
   let searchList = ref<ItemType[]>([])
+
   watch(pipelineValue, (value, oldValue, onCleanup) => {
     if (!value.trim()) {
       return searchList.value = []
@@ -109,12 +64,59 @@
     pipelineValue.value = ''
     list.value.forEach(item=> item.checked = false)
 
-    console.log(data);
-
     const res = await runPipelines(data)
   }
 
 </script>
+
+<template>
+  <div class="popup-view">
+    <div class="sticky-box">
+      <h3>流水线信息</h3>
+      <div class="form">
+        <p class="form-item">
+           运行上一次执行分支：<input type="checkbox" v-model="form.runLastedBranch">
+        </p>
+        <p class="form-item">
+          流水线名称：<input class="search-input" type="text" v-model="form.keywords" placeholder="请输入要查询的流水线">
+        </p>
+      </div>
+      <div class="handle-btn">
+        <button @click="getPipeList">获取流水线列表</button>
+        <button @click="runPipeList('dev')">运行流水线</button>
+        <button @click="runPipeList('pro')">运行卡点流水线</button>
+      </div>
+      <h3>搜索框：</h3>
+      <div class="search-box">
+        <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
+        <div v-if="searchList.length" class="search-list pipeline-list">
+          <label
+            class="pipeline-item"
+            v-for="(item, idx) in searchList" :key="idx"
+            :for="item.pipelineId"
+          >
+            <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
+            <span class="pipeline-name">{{ item.name }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="pipeline-list">
+      <label
+        class="pipeline-item"
+        v-for="(item, idx) in list" :key="idx"
+        :for="item.pipelineId"
+        :ref="el => handleRef(el, item)"
+      >
+        <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
+        <span class="pipeline-name">{{ item.name }}</span>
+        <span v-if="item.checked">
+          已勾选
+        </span>
+      </label>
+    </div>
+  </div>
+</template>
 
 <style scoped>
   .popup-view {

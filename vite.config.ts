@@ -11,7 +11,7 @@ import { resolve } from 'path'
 export default defineConfig({
   plugins: [
     vue(),
-    viteStaticCopy ( {
+    viteStaticCopy ({
       targets : [
         {
           src : 'src/plugins/manifest.json' ,
@@ -34,7 +34,7 @@ export default defineConfig({
       input: {
         'main': 'index.html',
         'inject': 'src/plugins/inject.ts',
-        // 'background': 'src/plugins/background.ts',
+        'popup': 'src/plugins/popup.ts',
       },
       output: {
         dir: 'dist',

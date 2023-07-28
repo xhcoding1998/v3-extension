@@ -12,6 +12,7 @@
     "*://*.aliyun.com/"
   ],
   "permissions": [
-    "cookies"
+    "cookies",
+    "storage"
   ]
 }
