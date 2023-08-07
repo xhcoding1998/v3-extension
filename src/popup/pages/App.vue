@@ -196,7 +196,8 @@
   }
   .search-box .search-list {
     width: 100%;
-    max-height: 200px;
+    height: auto !important;
+    max-height: 200px !important;
     background: #FFFFFF;
     position: absolute;
     top: 40px;
@@ -204,7 +205,7 @@
     box-sizing: border-box;
     border-radius: 10px;
     overflow: auto;
-    padding: 0 10px;
+    padding: 10px 10px;
     box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
   }
 
