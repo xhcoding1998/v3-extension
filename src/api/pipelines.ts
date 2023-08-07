@@ -9,6 +9,5 @@ export const getBranch = async (params = {}) => {
 }
 
 export const runPipelines = async <T>(data: T) => {
-  console.log(data);
   return request.post('/running', data)
 }
