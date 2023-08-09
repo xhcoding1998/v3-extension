@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { getBranch, getPipelines, runPipelines } from "@/api/pipelines";
-  import {  reactive, ref, watch } from "vue";
+  import {  reactive, ref, watch, type ComponentPublicInstance } from "vue";
 
   interface ItemType {
     checked?: boolean,
@@ -39,8 +39,8 @@
   }
 
   // 获取checkbox元素
-  let checkboxDoms = ref<Element[]>([])
-  const handleRef = (el: Element, item: ItemType) => {
+  let checkboxDoms = ref<(Element)[]>([])
+  const handleRef = (el: any, item: ItemType) => {
     checkboxDoms.value.push(el)
   }
 
@@ -76,6 +76,8 @@
     pipelineValue.value = ''
     list.value.forEach(item=> item.checked = false)
 
+    console.log(data)
+    return
     const res = await runPipelines(data)
   }
 
@@ -119,48 +121,52 @@
       <div class="search-box">
         <input class="search-input" type="text" v-model="pipelineValue" placeholder="请输入流水线名称">
         <div v-if="searchList.length" class="search-list pipeline-list">
-          <div class="pipeline-item-box" v-for="(item, idx) in searchList" :key="idx" @click="branchPipeline(item)">
-            <label
-              class="pipeline-item"
-              :for="item.pipelineId"
-              :ref="el => handleRef(el, item)">
-              <div class="pipeline-info">
-                <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
-                <span class="pipeline-name">{{ item.name }}</span>
+          <div class="pipeline-temp">
+            <div class="pipeline-item-box" v-for="(item, idx) in searchList" :key="idx" @click="branchPipeline(item)">
+              <label
+                class="pipeline-item"
+                :for="'s'+item.pipelineId"
+                :ref="el => handleRef(el, item)">
+                <div class="pipeline-info">
+                  <input type="checkbox" :name="'s'+item.pipelineId" :id="'s'+item.pipelineId" v-model="item.checked">
+                  <span class="pipeline-name">{{ item.name }}</span>
+                </div>
+                <!-- <a @click="branchPipeline(item)">获取分支</a> -->
+              </label>
+              <div class="branch-list">
+                <template v-for="(branch, bIdx) in item.branchList">
+                  <label class="branch-item" :for="'s'+idx+branch.name">
+                    <input type="radio" :id="'s'+idx+branch.name" :value="branch.name" v-model="item.branchName">
+                    {{ branch.name }}
+                  </label>
+                </template>
               </div>
-              <!-- <a @click="branchPipeline(item)">获取分支</a> -->
-            </label>
-            <div class="branch-list">
-              <template v-for="(branch, bIdx) in item.branchList">
-                <label class="branch-item" :for="branch.name">
-                  <input type="radio" :id="branch.name" :value="branch.name" v-model="item.branchName">
-                  {{ branch.name }}
-                </label>
-              </template>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="pipeline-list">
-      <div class="pipeline-item-box" v-for="(item, idx) in list" :key="idx" @click="branchPipeline(item)">
-        <label
-          class="pipeline-item"
-          :for="item.pipelineId"
-          :ref="el => handleRef(el, item)">
-          <div class="pipeline-info">
-            <input type="checkbox" :name="item.pipelineId" :id="item.pipelineId" v-model="item.checked">
-            <span class="pipeline-name">{{ item.name }}</span>
+      <div class="pipeline-temp">
+        <div class="pipeline-item-box" v-for="(item, idx) in list" :key="idx" @click="branchPipeline(item)">
+          <label
+            class="pipeline-item"
+            :for="'l'+item.pipelineId"
+            :ref="el => handleRef(el, item)">
+            <div class="pipeline-info">
+              <input type="checkbox" :name="'l'+item.pipelineId" :id="'l'+item.pipelineId" v-model="item.checked">
+              <span class="pipeline-name">{{ item.name }}</span>
+            </div>
+            <!-- <a @click="branchPipeline(item)">获取分支</a> -->
+          </label>
+          <div class="branch-list">
+            <template v-for="(branch, bIdx) in item.branchList" :key="'l'+idx+branch.name">
+              <label class="branch-item" :for="'l'+idx+branch.name">
+                <input type="radio" :id="'l'+idx+branch.name" :value="branch.name" v-model="item.branchName">
+                {{ branch.name }}
+              </label>
+            </template>
           </div>
-          <!-- <a @click="branchPipeline(item)">获取分支</a> -->
-        </label>
-        <div class="branch-list">
-          <template v-for="(branch, bIdx) in item.branchList">
-            <label class="branch-item" :for="branch.name">
-              <input type="radio" :id="branch.name" :value="branch.name" v-model="item.branchName">
-              {{ branch.name }}
-            </label>
-          </template>
         </div>
       </div>
     </div>
@@ -211,20 +217,27 @@
 
   .pipeline-list {
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
     height: 380px;
     overflow-y: auto;
   }
+  .pipeline-temp {
+    widows: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 
   .pipeline-item-box {
+    width: 100%;
     padding: 10px 10px;
     box-sizing: border-box;
     background: aliceblue;
   }
 
   .pipeline-item {
+    width: 100%;
+    word-break: break-word;
     padding: 10px 10px;
     box-sizing: border-box;
     background: aliceblue;
@@ -276,6 +289,8 @@
   .branch-item {
     display: flex;
     align-items: center;
+    width: 100%;
+    word-break: break-word;
   }
   .branch-item input {
     margin-right: 10px;
