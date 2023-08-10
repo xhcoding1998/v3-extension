@@ -76,8 +76,6 @@
     pipelineValue.value = ''
     list.value.forEach(item=> item.checked = false)
 
-    console.log(data)
-    return
     const res = await runPipelines(data)
   }
 
